@@ -1,0 +1,16 @@
+Requires=docker.service
+After=docker.service
+[Service]
+WorkingDirectory=/var/www/send
+#Restart=always
+User=send
+Group=docker
+# Shutdown container (if running) when unit is stopped
+ExecStartPre=/usr/local/bin/docker-compose stop 
+ExecStartPre=/usr/local/bin/docker-compose -f /var/www/send/docker-compose.yml pull 
+# Start container when unit is started
+ExecStart=/usr/local/bin/docker-compose up
+# Stop container when unit is stopped
+ExecStop=/usr/local/bin/docker-compose stop
+[Install]
+WantedBy=multi-user.target
